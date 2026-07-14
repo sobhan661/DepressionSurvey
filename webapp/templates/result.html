@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Survey Result</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Newsreader:ital,wght@1,400;1,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #12141c;
+        --surface: #1b1e29;
+        --ink: #e8e6de;
+        --muted: #8a8d9a;
+        --signal: #f2a65a;
+        --noise: #4a5568;
+        --border: rgba(232, 230, 222, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Inter", sans-serif;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      main.result {
+        min-height: 100svh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 48px 20px;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 560px;
+      }
+
+      .eyebrow {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        color: var(--signal);
+        text-transform: uppercase;
+        margin: 0 0 18px;
+      }
+
+      h1 {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: clamp(28px, 5vw, 40px);
+        line-height: 1.15;
+        letter-spacing: -0.01em;
+        margin: 0 0 14px;
+      }
+
+      .sub {
+        font-family: "Newsreader", serif;
+        font-style: italic;
+        font-size: 17px;
+        color: var(--muted);
+        margin: 0 0 40px;
+        max-width: 440px;
+      }
+
+      .gauge {
+        margin-bottom: 32px;
+      }
+
+      .gauge-track {
+        width: 100%;
+        height: 8px;
+        border-radius: 999px;
+        background: rgba(74, 85, 104, 0.35);
+        overflow: hidden;
+        margin-bottom: 14px;
+      }
+
+      .gauge-fill {
+        height: 100%;
+        background: var(--signal);
+        border-radius: 999px;
+      }
+
+      .gauge-label {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+      }
+
+      .gauge-percentage {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 28px;
+        font-weight: 500;
+        color: var(--ink);
+      }
+
+      .gauge-tag {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 5px 12px;
+      }
+
+      .result-text {
+        font-size: 17px;
+        color: var(--ink);
+        margin: 0 0 36px;
+      }
+
+      .notice {
+        border: 1px solid var(--border);
+        background: var(--surface);
+        border-radius: 14px;
+        padding: 20px 22px;
+        margin-bottom: 40px;
+      }
+
+      .notice-label {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--signal);
+        margin: 0 0 10px;
+      }
+
+      .notice p:last-child {
+        margin: 0;
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 22px;
+      }
+
+      .link {
+        font-family: "Inter", sans-serif;
+        font-weight: 500;
+        font-size: 14px;
+        color: var(--ink);
+        text-decoration: none;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 2px;
+        transition:
+          border-color 0.15s ease,
+          color 0.15s ease;
+      }
+
+      .link:hover {
+        color: var(--signal);
+        border-color: var(--signal);
+      }
+
+      .link:focus-visible {
+        outline: 2px solid var(--signal);
+        outline-offset: 4px;
+      }
+
+      @media (max-width: 480px) {
+        .actions {
+          flex-direction: column;
+          gap: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="result">
+      <div class="card">
+        <p class="eyebrow">Screening result</p>
+        <h1>Your screening result</h1>
+        <p class="sub">
+          Here's what your answers suggest — read it alongside the note below,
+          not instead of it.
+        </p>
+
+        <div class="gauge">
+          <div class="gauge-track">
+            <div
+              class="gauge-fill"
+              style="width: {{ risk_percentage }}%;"
+            ></div>
+          </div>
+          <div class="gauge-label">
+            <span class="gauge-percentage">{{ risk_percentage }}%</span>
+            <span class="gauge-tag">
+              {% if elevated_risk %}Elevated{% else %}Lower{% endif %}
+            </span>
+          </div>
+        </div>
+
+        <p class="result-text">
+          {% if elevated_risk %} Your answers indicate an elevated screening
+          risk. {% else %} Your answers indicate a lower screening risk. 
+          {% endif %}
+        </p>
+
+        <div class="notice">
+          <p class="notice-label">Please note</p>
+          <p>
+            This is not a medical diagnosis. If you are struggling or feel
+            unsafe, contact a qualified mental-health professional or local
+            emergency support.
+          </p>
+        </div>
+
+        <div class="actions">
+          <a class="link" href="{% url 'survey' %}">Take the survey again</a>
+          <a class="link" href="{% url 'home' %}">Back to home</a>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Survey</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Newsreader:ital,wght@1,400;1,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+      :root{
+        --bg: #12141C;
+        --surface: #1B1E29;
+        --ink: #E8E6DE;
+        --muted: #8A8D9A;
+        --signal: #F2A65A;
+        --noise: #4A5568;
+        --border: rgba(232,230,222,0.10);
+        --danger: #E2645A;
+      }
+
+      *{ box-sizing: border-box; }
+
+      body{
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: 'Inter', sans-serif;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      main{
+        display: flex;
+        justify-content: center;
+        padding: 64px 20px 80px;
+      }
+
+      .wrap{
+        width: 100%;
+        max-width: 560px;
+      }
+
+      .eyebrow{
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        color: var(--signal);
+        text-transform: uppercase;
+        margin: 0 0 18px;
+      }
+
+      h1{
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        font-size: clamp(28px, 5vw, 38px);
+        line-height: 1.15;
+        letter-spacing: -0.01em;
+        margin: 0 0 14px;
+      }
+
+      .sub{
+        font-family: 'Newsreader', serif;
+        font-style: italic;
+        font-size: 17px;
+        color: var(--muted);
+        margin: 0 0 40px;
+        max-width: 440px;
+      }
+
+      .survey-form .field{
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin: 0 0 26px;
+      }
+
+      .survey-form label{
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+        font-size: 14px;
+        color: var(--ink);
+      }
+
+      .survey-form input[type="text"],
+      .survey-form input[type="number"],
+      .survey-form input[type="email"],
+      .survey-form input:not([type]),
+      .survey-form select,
+      .survey-form textarea{
+        width: 100%;
+        background: var(--surface);
+        color: var(--ink);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px 14px;
+        font-family: 'Inter', sans-serif;
+        font-size: 15px;
+        line-height: 1.4;
+      }
+
+      .survey-form textarea{
+        resize: vertical;
+        min-height: 90px;
+      }
+
+      .survey-form select{
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'><path d='M4 6l4 4 4-4' fill='none' stroke='%238A8D9A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        padding-right: 38px;
+      }
+
+      .survey-form input[type="radio"],
+      .survey-form input[type="checkbox"]{
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+        accent-color: var(--signal);
+        vertical-align: middle;
+      }
+
+      .survey-form ul{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .survey-form .field ul li{
+        font-size: 14px;
+        color: var(--ink);
+      }
+
+      .survey-form input:focus,
+      .survey-form select:focus,
+      .survey-form textarea:focus{
+        outline: 2px solid var(--signal);
+        outline-offset: 2px;
+        border-color: var(--signal);
+      }
+
+      .errorlist{
+        list-style: none;
+        margin: 2px 0 0;
+        padding: 0;
+      }
+
+      .errorlist li{
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 12px;
+        color: var(--danger);
+      }
+
+      .cta{
+        display: inline-block;
+        background: var(--signal);
+        color: #21160A;
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+        font-size: 16px;
+        border: none;
+        border-radius: 999px;
+        padding: 15px 34px;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+      }
+
+      .cta:hover{
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px -8px rgba(242,166,90,0.45);
+      }
+
+      .cta:focus-visible{
+        outline: 2px solid var(--signal);
+        outline-offset: 3px;
+      }
+
+      .back{
+        margin-top: 34px;
+      }
+
+      .link{
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+        font-size: 14px;
+        color: var(--ink);
+        text-decoration: none;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 2px;
+        transition: border-color 0.15s ease, color 0.15s ease;
+      }
+
+      .link:hover{
+        color: var(--signal);
+        border-color: var(--signal);
+      }
+
+      .link:focus-visible{
+        outline: 2px solid var(--signal);
+        outline-offset: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="wrap">
+        <p class="eyebrow">Screening survey</p>
+        <h1>Mental health survey</h1>
+        <p class="sub">Please answer each question based on your usual habits.</p>
+
+        <form method="post" action="{% url 'survey' %}" class="survey-form">
+          {% csrf_token %}
+          {{ form.non_field_errors }}
+
+          {% for field in form %}
+            <div class="field">
+              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field }}
+              {{ field.errors }}
+            </div>
+          {% endfor %}
+
+          <button type="submit" class="cta">See my result</button>
+        </form>
+
+        <p class="back"><a class="link" href="{% url 'home' %}">Back to home</a></p>
+      </div>
+    </main>
+  </body>
+</html>
