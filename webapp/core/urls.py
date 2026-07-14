@@ -1,11 +1,12 @@
 from django.urls import path
-from django.shortcuts import redirect
-from pathlib import Path
+from django.views.generic import RedirectView
 
-from core.views import Home
+from core.views import Home, SurveyView
 
 urlpatterns = [
-    path('', lambda x: redirect('/home')),
-    path('home', Home.as_view())
+    path("", RedirectView.as_view(pattern_name="home", permanent=False)),
+    path("home", Home.as_view(), name="home"),
+    path("survey", SurveyView.as_view(), name="survey"),
+    path("quiz.html", RedirectView.as_view(pattern_name="survey", permanent=False)),
 ]
 
