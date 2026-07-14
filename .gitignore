@@ -2,3 +2,7 @@
 .env
 ml/data/raw
 __pycache__/
+.agents/
+*.egg-info/
+*.py[cod]
+ml/models/*.joblib
