@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "salemi-ml"
+version = "0.1.0"
+description = "Salemi machine-learning project"
+requires-python = ">=3.10"
+
+[tool.setuptools.packages.find]
+include = ["ml*"]
