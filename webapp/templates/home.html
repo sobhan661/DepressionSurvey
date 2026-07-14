@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Signal — what your habits say about your mental health</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Newsreader:ital,wght@1,400;1,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #12141c;
+        --surface: #1b1e29;
+        --ink: #e8e6de;
+        --muted: #8a8d9a;
+        --signal: #f2a65a;
+        --noise: #4a5568;
+        --border: rgba(232, 230, 222, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Inter", sans-serif;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .eyebrow {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        color: var(--signal);
+        text-transform: uppercase;
+        margin: 0 0 22px;
+      }
+
+      .hero {
+        position: relative;
+        min-height: 92svh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 100px 24px 64px;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 70% 55% at 50% 42%,
+          rgba(18, 20, 28, 0) 0%,
+          rgba(18, 20, 28, 0.65) 60%,
+          rgba(18, 20, 28, 0.95) 100%
+        );
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      #signal-canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 720px;
+      }
+
+      h1 {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: clamp(32px, 5.4vw, 56px);
+        line-height: 1.12;
+        letter-spacing: -0.01em;
+        margin: 0 0 22px;
+      }
+
+      .sub {
+        font-family: "Newsreader", serif;
+        font-style: italic;
+        font-weight: 400;
+        font-size: clamp(17px, 2vw, 21px);
+        color: var(--muted);
+        max-width: 480px;
+        margin: 0 auto 40px;
+      }
+
+      .cta {
+        display: inline-block;
+        background: var(--signal);
+        color: #21160a;
+        font-family: "Inter", sans-serif;
+        font-weight: 600;
+        font-size: 16px;
+        text-decoration: none;
+        padding: 16px 34px;
+        border-radius: 999px;
+        transition:
+          transform 0.18s ease,
+          box-shadow 0.18s ease;
+        box-shadow: 0 0 0 0 rgba(242, 166, 90, 0);
+      }
+
+      .cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px -8px rgba(242, 166, 90, 0.45);
+      }
+
+      .cta:focus-visible,
+      a:focus-visible,
+      button:focus-visible {
+        outline: 2px solid var(--signal);
+        outline-offset: 3px;
+      }
+
+      .how {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 80px 24px 60px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 28px;
+      }
+
+      .step {
+        border-top: 1px solid var(--border);
+        padding-top: 20px;
+      }
+
+      .step .num {
+        display: block;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 13px;
+        color: var(--signal);
+        margin-bottom: 12px;
+      }
+
+      .step p {
+        margin: 0;
+        font-size: 15px;
+        color: var(--ink);
+      }
+
+      .about {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 40px 24px 100px;
+        text-align: center;
+      }
+
+      .about p {
+        font-size: 14px;
+        color: var(--muted);
+        margin: 0 0 10px;
+      }
+
+      .about strong {
+        color: var(--ink);
+        font-weight: 500;
+      }
+
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 26px 24px;
+        text-align: center;
+      }
+
+      footer p {
+        margin: 0;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+        color: var(--noise);
+        letter-spacing: 0.02em;
+      }
+
+      @media (max-width: 720px) {
+        .how {
+          grid-template-columns: 1fr;
+          gap: 30px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        .cta {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <canvas id="signal-canvas" aria-hidden="true"></canvas>
+      <div class="hero-content">
+        <p class="eyebrow">Social media × mental health</p>
+        <h1>Find out what your habits say about your mental health.</h1>
+        <p class="sub">
+          A two-minute survey, one honest read on where you stand.
+        </p>
+        <a class="cta" href="quiz.html">Take the assessment</a>
+      </div>
+    </header>
+
+    <section class="how" aria-label="How it works">
+      <div class="step">
+        <span class="num">01</span>
+        <p>
+          Answer a short survey about your sleep, screen time, activity, and
+          social habits.
+        </p>
+      </div>
+      <div class="step">
+        <span class="num">02</span>
+        <p>
+          A model trained on real survey data reads the pattern behind your
+          answers.
+        </p>
+      </div>
+      <div class="step">
+        <span class="num">03</span>
+        <p>
+          You get a plain-language depression-risk read, with the factors behind
+          it.
+        </p>
+      </div>
+    </section>
+
+    <section class="about">
+      <p>
+        <strong>About this project.</strong> Built on a public survey dataset of
+        1,200 respondents, using scikit-learn and Django.
+      </p>
+      <p>
+        This is a portfolio demo, not a diagnosis. If you're struggling, please
+        talk to a real professional or someone you trust.
+      </p>
+    </section>
+
+    <footer>
+      <p>Made With Luv By Sobhan</p>
+    </footer>
+
+    <script>
+      (function () {
+        var canvas = document.getElementById("signal-canvas");
+        var ctx = canvas.getContext("2d");
+        var reduceMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+        var W, H, DPR, points, start;
+        var DURATION = 1800;
+        var noiseColor = [138, 141, 154];
+        var signalColor = [242, 166, 90];
+
+        function lerp(a, b, t) {
+          return a + (b - a) * t;
+        }
+        function ease(t) {
+          return 1 - Math.pow(1 - t, 3);
+        }
+
+        function resize() {
+          DPR = window.devicePixelRatio || 1;
+          W = canvas.clientWidth;
+          H = canvas.clientHeight;
+          canvas.width = W * DPR;
+          canvas.height = H * DPR;
+          ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+          initPoints();
+        }
+
+        function initPoints() {
+          var count = Math.max(50, Math.round(W / 16));
+          points = [];
+          for (var i = 0; i < count; i++) {
+            var progress = count === 1 ? 0 : i / (count - 1);
+            var tx = progress * W;
+            var ty =
+              H * 0.55 +
+              Math.sin(progress * Math.PI * 2.4) * Math.min(H * 0.16, 42);
+            points.push({
+              sx: Math.random() * W,
+              sy: Math.random() * H,
+              tx: tx,
+              ty: ty,
+              phase: Math.random() * Math.PI * 2,
+            });
+          }
+        }
+
+        function debounce(fn, wait) {
+          var timer;
+          return function () {
+            clearTimeout(timer);
+            timer = setTimeout(fn, wait);
+          };
+        }
+
+        function frame(ts) {
+          if (!start) start = ts;
+          var elapsed = ts - start;
+          var t = reduceMotion ? 1 : Math.min(1, elapsed / DURATION);
+          var et = ease(t);
+          var time = ts / 1000;
+
+          ctx.clearRect(0, 0, W, H);
+
+          for (var i = 0; i < points.length; i++) {
+            var p = points[i];
+            var x = lerp(p.sx, p.tx, et);
+            var y = lerp(p.sy, p.ty, et);
+            if (t >= 1 && !reduceMotion) {
+              y += Math.sin(time * 0.8 + p.phase) * 3;
+            }
+            var r = Math.round(lerp(noiseColor[0], signalColor[0], et));
+            var g = Math.round(lerp(noiseColor[1], signalColor[1], et));
+            var b = Math.round(lerp(noiseColor[2], signalColor[2], et));
+            var alpha = lerp(0.3, 0.75, et);
+
+            ctx.beginPath();
+            ctx.arc(x, y, 1.6, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + alpha + ")";
+            ctx.fill();
+          }
+
+          if (!reduceMotion) {
+            requestAnimationFrame(frame);
+          }
+        }
+
+        window.addEventListener("resize", debounce(resize, 150));
+        resize();
+        requestAnimationFrame(frame);
+      })();
+    </script>
+  </body>
+</html>
