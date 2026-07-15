@@ -3,6 +3,7 @@ from functools import lru_cache
 import joblib
 import pandas as pd
 from django.conf import settings
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
 from django.views.generic import TemplateView
@@ -21,6 +22,10 @@ def get_model():
 
 class Home(TemplateView):
     template_name = "home.html"
+
+
+def health_check(request):
+    return JsonResponse({"status": "ok"})
 
 
 class SurveyView(View):
