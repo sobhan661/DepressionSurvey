@@ -50,14 +50,6 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-Create `.env` from `.env.example` and use a local development secret:
-
-```env
-DJANGO_SECRET_KEY=replace-with-a-long-random-development-secret
-DEBUG=True
-ALLOWED_HOSTS=localhost,127.0.0.1
-```
-
 Run migrations and start the development server:
 
 ```powershell
